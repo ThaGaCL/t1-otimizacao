@@ -20,7 +20,8 @@ p_2 >= 0;
 
 rota_12 = rota_24 + rota_23;
 rota_13 = rota_34 + rota_23;
-
+rota_23 = rota_34
+tudo que tem como destino x é igual a tudo que tem como origem x
 recebido = rota_24 + rota_34;
 recebido = toneladas;
 
@@ -43,7 +44,7 @@ s_212 = 1;
 s_312 = 5;
 
 s_113 = 2;
-s_213 = 1;
+s_213 = 2;
 s_313 = 0;
 
 s_123 = 1;
@@ -56,7 +57,7 @@ s_324 = 0;
 
 s_134 = 3;
 s_234 = 4;
-s_334 = 6;
+s_334 = 6;  
 
 /* tij é  se a rota_ ij esta presente no trajeto
 
