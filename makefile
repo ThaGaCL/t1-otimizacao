@@ -13,4 +13,4 @@ modelagem.o: modelagem.cpp modelagem.h
 	$(CC) $(CFLAGS) -c modelagem.cpp
 
 clean:
-	rm -rf *.o main
+	rm -rf *.o main transporte
