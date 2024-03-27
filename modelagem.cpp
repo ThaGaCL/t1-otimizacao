@@ -79,12 +79,20 @@ void rotas(vector<vector<int>> m){
     }
     cout << "\n\n";
 
-    // for(int i = 0; i < m.size(); i++){
-    //     cout << "rota_" << m[i][0] << m[i][1] << " =  " << FIM;
-    //     for(int j = 3; j < m[i].size(); j++){
-    //         cout << "rota_" << j-2 << m[i][0] << m[i][1] << " + ";
-    //     }
-    // }
+    for(int i = 0; i < m.size(); i++){
+        if(m[i][0] == 1){
+            cout << "rota_" << m[i][0] << m[i][1] << " = ";
+            for(int j = 0; j < m.size(); j++){
+                if(m[j][0] == m[i][1]){
+                    cout << "rota_" << m[j][0] << m[j][1];
+                    if(j != m.size() - 1 && m[j+1][0] == m[i][1]){
+                        cout << " + ";
+                    }
+                }
+            }
+            cout << FIM;
+        }       
+    }
 
     cout << "\n\n";
 
@@ -102,8 +110,6 @@ void recebido(int qtd_cidades, vector<vector<int>> m){
 
     }
     cout << FIM;
-    cout << "recebido = toneladas;\n";
-
     cout << "\n";
 
     cout << "toneladas =";
@@ -111,11 +117,12 @@ void recebido(int qtd_cidades, vector<vector<int>> m){
         if(m[i][0] == 1){
             cout << " rota_" << m[i][0] << m[i][1];
             if(i != m.size() - 1 && m[i+1][0] == 1){
-                cout << " + ";
+                cout << " +";
             }
         }
     }
     cout << FIM;
+    cout << "\n\n";
 
 }
 
@@ -140,50 +147,66 @@ void recursos_rotas(int qtd_rotas, vector<vector<int>> m, int qtd_recursos){
 
 void modulo_rota(vector<vector<int>> m){
     for(int i = 0; i < m.size(); i++){
-        cout << "modulo_rota_" << m[i][0] << m[i][1] << " >= ";
+        cout << "mdl_rota_" << m[i][0] << m[i][1] << " >= ";
         cout << "-rota_" << m[i][0] << m[i][1] << FIM;        
     }
     cout << "\n";
 
     for(int i = 0; i < m.size(); i++){
-        cout << "modulo_rota_" << m[i][0] << m[i][1] << " >= ";
+        cout << "mdl_rota_" << m[i][0] << m[i][1] << " >= ";
         cout << "rota_" << m[i][0] << m[i][1] << FIM;        
     }
     cout << "\n";
-
-    for(int i = 0; i < m.size(); i++){
-        cout << "modulo_rota_" << m[i][0] << m[i][1] << " <= ";
-        cout << "5 t_" << m[i][0] << m[i][1] << FIM;        
-    }
     cout << "\n\n";
 }
 
 // com ajuda da variavel de existencia t_ij, na qual ij é o caminho de i até j, podemos indicar quantos recursos de cada tipo são necessários */
+// recurso_necessario_1 = 1 mdl_rota_12 + 2 mdl_rota_13 + 1 mdl_rota_23 + 2 mdl_rota_24 + 3 mdl_rota_34;
+
 void recurso_necessario(vector<vector<int>> m, int qtd_recursos){
     for(int i = 1; i <= qtd_recursos; i++){
         cout << "recurso_necessario_" << i << " = ";
         for(int j = 0; j < m.size(); j++){
-            cout << m[j][i+2] << " t_" << m[j][0] << m[j][1];
+            cout << m[j][i+2] << " mdl_rota_" << m[j][0] << m[j][1];
             if(j != m.size() - 1){
                 cout << " + ";
             }
         }
-        cout << FIM << "\n";
+        cout << FIM;
     }
+    cout << "\n";
 }
 
 
-// a soma de todos os recursos de todas as rotas tem que ser menor do que o disponível nos pacotes comprados
-// 1 t_12 <= 4 p_1 + 5 p_2 - recurso_necessario_1 + 1 t_12;  
-void recursos_disponiveis(int qtd_recursos, vector<vector<int>> m, int qtd_pacotes, vector<vector<int>> v){
-    for(int i = 0; i < m.size(); i++){
-        for(int j = 1; j <= qtd_recursos; j++){
-            cout << m[i][j + 2];
-            cout << " t_" << m[i][0] << m[i][1] << " <= ";
-            for(int k = 0; k < v.size(); k++){
-                cout << v[k][j+1] << "p_" << k+1 << " - recurso_necessario_" << j << " + " << m[i][j+2] << " t_" << m[i][0] << m[i][1] << FIM;
+// recurso_comprado_1 = 4 p_1 + 5 p_2;
+void recurso_comprado (vector<vector<int>> m, int qtd_recursos){
+    for(int i = 1; i <= qtd_recursos; i++){
+        cout << "recurso_comprado_" << i << " = ";
+        for(int j = 0; j < m.size(); j++){
+            cout << m[j][i] << " p_" << j+1;
+            if(j != m.size() - 1){
+                cout << " + ";
             }
         }
-        cout << "\n";
+        cout << FIM;
     }
+    cout << "\n";
+}
+
+void recurso_usado(int qtd_recursos){
+
+    for(int i = 1; i <= qtd_recursos; i++){
+        cout << "recurso_nescessario_" << i << " <= recurso_comprado_" << i << FIM;
+    }
+    cout << "\n";
+
+}
+
+void variaveis_int(vector<vector<int>> m){
+    cout << "int ";
+    for(int i = 0; i < m.size()-1; i++){
+        cout << "rota_" << m[i][0] << m[i][1] << ", ";
+    }
+    cout << "rota_" << m[m.size()-1][0] << m[m.size()-1][1] << FIM;
+    cout << "\n";
 }
