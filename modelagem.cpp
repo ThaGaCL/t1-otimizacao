@@ -83,8 +83,8 @@ void rotas(vector<vector<int>> m) {
 
 
     // capturado o maior valor e o menor valor de cidade
-    int maior = 0;
-    int menor = 0;
+    int maior = INT32_MIN;
+    int menor = INT32_MAX;
     for(int i = 0; i < m.size(); i++){
         if(m[i][0] > maior){
             maior = m[i][0];
@@ -101,7 +101,7 @@ void rotas(vector<vector<int>> m) {
     }
     
 	// Iterando sobre as cidades intermediárias
-    for (int v = menor + 2; v < maior; v++) { // Ignora o menor e o maior (cidades de destino)
+    for (int v = menor + 1; v < maior; v++) { // Ignora o menor e o maior (cidades de destino)
 		string equacao = "";
 
 		// Encontrando as arestas que entram e saem do vértice v
@@ -110,7 +110,7 @@ void rotas(vector<vector<int>> m) {
 				if(rota[1] == v) {
 					equacao += "rota_" + to_string(rota[0]) + to_string(v);
 				} else if(rota[0] == v) {
-					equacao += "rota_" + to_string(v) + to_string(rota[1]);
+					equacao += "- rota_" + to_string(v) + to_string(rota[1]);
 				}
 
 			} else {
