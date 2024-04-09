@@ -72,30 +72,66 @@ void funcao_objetivo(int ganho, vector<vector<int>> v, int qtd_pacotes){
 
 } 
 
-void rotas(vector<vector<int>> m){
+void rotas(vector<vector<int>> m) {
+	// Vetor para armazenar as equações
+	vector<string> equacoes;
 
     for(int i = 0; i < m.size(); i++){
         cout << "-" << m[i][2] << " <= rota_" << m[i][0] << m[i][1] << " <= " << m[i][2] << FIM;
     }
     cout << "\n\n";
 
+
+    // capturado o maior valor e o menor valor de cidade
+    int maior = 0;
+    int menor = 0;
     for(int i = 0; i < m.size(); i++){
-        if(m[i][0] == 1){
-            cout << "rota_" << m[i][0] << m[i][1] << " = ";
-            for(int j = 0; j < m.size(); j++){
-                if(m[j][0] == m[i][1]){
-                    cout << "rota_" << m[j][0] << m[j][1];
-                    if(j != m.size() - 1 && m[j+1][0] == m[i][1]){
-                        cout << " + ";
-                    }
-                }
-            }
-            cout << FIM;
-        }       
+        if(m[i][0] > maior){
+            maior = m[i][0];
+        }
+        if(m[i][1] > maior){
+            maior = m[i][1];
+        }
+        if(m[i][0] < menor){
+            menor = m[i][0];
+        }
+        if(m[i][1] < menor){
+            menor = m[i][1];
+        }
     }
+    
+	// Iterando sobre as cidades intermediárias
+    for (int v = menor + 2; v < maior; v++) { // Ignora o menor e o maior (cidades de destino)
+		string equacao = "";
 
-    cout << "\n\n";
+		// Encontrando as arestas que entram e saem do vértice v
+		for(auto rota : m) {
+			if(equacao.empty()) {
+				if(rota[1] == v) {
+					equacao += "rota_" + to_string(rota[0]) + to_string(v);
+				} else if(rota[0] == v) {
+					equacao += "rota_" + to_string(v) + to_string(rota[1]);
+				}
 
+			} else {
+				if(rota[1] == v) {
+					equacao += " + rota_" + to_string(rota[0]) + to_string(v);
+				} else if(rota[0] == v) {
+					equacao += " - rota_" + to_string(v) + to_string(rota[1]);
+				}
+			}
+		}
+
+		// Adicionando a equação ao vetor de equações
+		equacoes.push_back(equacao + " = 0;");
+	}
+
+	// Imprimindo as equações
+	for(const auto& eq : equacoes) {
+		cout << eq << "\n";
+	}
+
+	cout << "\n";
 }
 
 void recebido(int qtd_cidades, vector<vector<int>> m){
@@ -196,7 +232,7 @@ void recurso_comprado (vector<vector<int>> m, int qtd_recursos){
 void recurso_usado(int qtd_recursos){
 
     for(int i = 1; i <= qtd_recursos; i++){
-        cout << "recurso_nescessario_" << i << " <= recurso_comprado_" << i << FIM;
+        cout << "recurso_necessario_" << i << " <= recurso_comprado_" << i << FIM;
     }
     cout << "\n";
 
